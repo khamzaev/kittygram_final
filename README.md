@@ -1,26 +1,81 @@
-#  Как работать с репозиторием финального задания
+# Контейнеры и CI/CD для Kittygram
 
-## Что нужно сделать
+## Стек технологий
 
-Настроить запуск проекта Kittygram в контейнерах и CI/CD с помощью GitHub Actions
+![Django](https://img.shields.io/badge/Django-092E20?logo=django&logoColor=white)
+![PostgreSQL](https://img.shields.io/badge/PostgreSQL-336791?logo=postgresql&logoColor=white)
+![React](https://img.shields.io/badge/React-61DAFB?logo=react&logoColor=black)
+![Nginx](https://img.shields.io/badge/Nginx-009639?logo=nginx&logoColor=white)
+![Docker](https://img.shields.io/badge/Docker-2496ED?logo=docker&logoColor=white)
+![GitHub Actions](https://img.shields.io/badge/GitHub_Actions-2088FF?logo=github-actions&logoColor=white)
 
-## Как проверить работу с помощью автотестов
+## Установка Docker Compose на сервер
 
-В корне репозитория создайте файл tests.yml со следующим содержимым:
-```yaml
-repo_owner: ваш_логин_на_гитхабе
-kittygram_domain: полная ссылка (https://доменное_имя) на ваш проект Kittygram
-taski_domain: полная ссылка (https://доменное_имя) на ваш проект Taski
-dockerhub_username: ваш_логин_на_докерхабе
+Для установки Docker и Docker Compose на сервер выполните следующие команды:
+
+```bash
+sudo apt update
+sudo apt install curl
+curl -fSL https://get.docker.com -o get-docker.sh
+sudo sh ./get-docker.sh
+sudo apt install docker-compose-plugin
 ```
 
-Скопируйте содержимое файла `.github/workflows/main.yml` в файл `kittygram_workflow.yml` в корневой директории проекта.
+Скопируйте файл `docker-compose.production.yml` на сервер в директорию проекта с помощью следующей команды:
 
-Для локального запуска тестов создайте виртуальное окружение, установите в него зависимости из backend/requirements.txt и запустите в корневой директории проекта `pytest`.
+```bash
+scp -i path_to_SSH/SSH_name docker-compose.production.yml \
+    username@server_ip:/home/username/<директория проекта>/docker-compose.production.yml
+```
 
-## Чек-лист для проверки перед отправкой задания
+- `path_to_SSH` — путь к файлу с SSH-ключом;
+- `SSH_name` — имя файла с SSH-ключом (без расширения);
+- `username` — ваше имя пользователя на сервере;
+- `server_ip` — IP вашего сервера.
 
-- Проект Taski доступен по доменному имени, указанному в `tests.yml`.
-- Проект Kittygram доступен по доменному имени, указанному в `tests.yml`.
-- Пуш в ветку main запускает тестирование и деплой Kittygram, а после успешного деплоя вам приходит сообщение в телеграм.
-- В корне проекта есть файл `kittygram_workflow.yml`.
+Скопируйте файл `.env` на сервер в директорию проекта:
+
+```bash
+scp -i path_to_SSH/SSH_name .env \
+    username@server_ip:/home/username/<директория проекта>/.env
+```
+
+На сервере откройте файл конфигурации Nginx:
+
+```bash
+sudo nano /etc/nginx/sites-enabled/default
+```
+
+Измените настройки `location` на следующие:
+
+```nginx
+location / {
+    proxy_set_header Host $http_host;
+    proxy_pass http://127.0.0.1:8000;
+}
+```
+
+Перезагрузите конфигурацию Nginx:
+
+```bash
+sudo service nginx reload
+```
+
+## Workflow для обновления проекта на сервере
+
+Для обновления проекта на сервере выполните следующие шаги:
+
+1. Выполните команду `docker compose pull`, чтобы загрузить обновленные образы контейнеров с Docker Hub.
+2. Перезапустите контейнеры с обновленными образами.
+
+Чтобы автоматизировать этот процесс, настройте GitHub Actions в вашем репозитории. Перейдите в **Settings** → **Secrets and Variables** → **Actions** и добавьте необходимые секреты.
+
+![Secrets](secrets.png)
+
+После настройки выполните коммит и пуш в репозиторий, чтобы проверить выполнение workflow.
+
+![Workflow](workflow.png)
+
+---
+
+Автор: [@khamzaev](https://github.com/khamzaev)
