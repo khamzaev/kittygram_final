@@ -43,7 +43,7 @@ scp -i path_to_SSH/SSH_name .env \
 На сервере откройте файл конфигурации Nginx:
 
 ```bash
-sudo nano /etc/nginx/sites-enabled/default
+sudo nano /etc/nginx/sites-enabled/kittygram
 ```
 
 Измените настройки `location` на следующие:
@@ -51,7 +51,7 @@ sudo nano /etc/nginx/sites-enabled/default
 ```nginx
 location / {
     proxy_set_header Host $http_host;
-    proxy_pass http://127.0.0.1:8000;
+    proxy_pass http://127.0.0.1:9000;
 }
 ```
 
