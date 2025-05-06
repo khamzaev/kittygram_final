@@ -2,8 +2,6 @@ name: Main Kittygram workflow
 
 on:
   push:
-    branches:
-      - main
 
 jobs:
   tests:
@@ -44,6 +42,7 @@ jobs:
         python manage.py test
 
   build_and_push_to_docker_hub:
+    if: github.ref == 'refs/heads/main'
     name: Push Docker image to DockerHub
     runs-on: ubuntu-latest
     needs: tests
@@ -104,6 +103,7 @@ jobs:
           push: true
           tags: khamzaev/kittygram_frontend:latest
   build_gateway_and_push_to_docker_hub:
+    if: github.ref == 'refs/heads/main'
     name: Push gateway Docker image to DockerHub
     runs-on: ubuntu-latest
     steps:
@@ -123,6 +123,7 @@ jobs:
           push: true
           tags: khamzaev/kittygram_gateway:latest
   deploy:
+    if: github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
     needs:
       - build_and_push_to_docker_hub
@@ -156,6 +157,7 @@ jobs:
           sudo docker compose -f docker-compose.production.yml exec backend python manage.py collectstatic
           sudo docker compose -f docker-compose.production.yml exec backend cp -r /app/collected_static/. /backend_static/static/
   send_message:
+    if: github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
     needs: deploy
     steps:
