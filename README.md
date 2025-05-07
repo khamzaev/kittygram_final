@@ -1,5 +1,10 @@
 # Контейнеры и CI/CD для Kittygram
 
+## 🚀 Ссылки
+
+- 🐱 Репозиторий: [https://github.com/khamzaev/kittygram](https://github.com/khamzaev/kittygram)  
+- 🌐 Развёрнутый проект: [https://kittygram-djamal.lt51.ru](https://kittygram-djamal.lt51.ru)
+
 ## Стек технологий
 
 ![Django](https://img.shields.io/badge/Django-092E20?logo=django&logoColor=white)
@@ -8,6 +13,7 @@
 ![Nginx](https://img.shields.io/badge/Nginx-009639?logo=nginx&logoColor=white)
 ![Docker](https://img.shields.io/badge/Docker-2496ED?logo=docker&logoColor=white)
 ![GitHub Actions](https://img.shields.io/badge/GitHub_Actions-2088FF?logo=github-actions&logoColor=white)
+![CI/CD](https://github.com/khamzaev/kittygram/actions/workflows/main.yml/badge.svg)
 
 ## Установка Docker Compose на сервер
 
