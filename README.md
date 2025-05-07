@@ -2,7 +2,7 @@
 
 ## 🚀 Ссылки
 
-- 🐱 Репозиторий: [https://github.com/khamzaev/kittygram](https://github.com/khamzaev/kittygram_final)  
+- 🐱 Репозиторий: [https://github.com/khamzaev/kittygram_final](https://github.com/khamzaev/kittygram_final)  
 - 🌐 Развёрнутый проект: [https://kittygram-djamal.lt51.ru](https://kittygram-djamal.lt51.ru)
 
 ## Стек технологий
