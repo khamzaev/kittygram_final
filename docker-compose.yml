@@ -21,8 +21,7 @@ services:
     depends_on:
       - db
     restart: always
-    ports:
-      - "9000:9000"
+
   frontend:
     env_file: .env
     build: ./frontend/
